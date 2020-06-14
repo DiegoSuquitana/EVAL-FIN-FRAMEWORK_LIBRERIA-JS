@@ -28,11 +28,12 @@ $(function(){
     $(".btn-reinicio").click(function(){
         
         llenar();
-        setInterval(function(){timer()},1000)
+        setInterval(function(){timer()},1000);
+        $(this).html("Reiniciar");
     })
 
 // visualizar panel score //
-    function callback()
+function callback()
     {
         $( ".panel-score" ).animate({width:'100%'},4000);
     }
