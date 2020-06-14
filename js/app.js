@@ -26,6 +26,7 @@ $(function(){
         //eliminarDulces();
     })
 
+
 // eliminar 3 dulces //
 function eliminarDulces(){
     matriz=0;
@@ -43,7 +44,7 @@ function eliminarDulces(){
         bnewd=0;
         //newdulces=setInterval(function()
         //{
-            nuevosdulces() //Funcion completar nuevos dulces
+            llenar() //Funcion completar nuevos dulces
         //},600)
     }
     if(rbh==1 || rbv==1)
