@@ -16,16 +16,90 @@ function color2(){
     })
 }
 //fin animacion titulo//
-
+var cont = 0;
 $(function(){
     color1();
     
     $(".btn-reinicio").click(function(){
         
         llenar();
-        vertical();
+        //eliminarDulces();
     })
 
+// eliminar 3 dulces //
+function eliminarDulces(){
+    matriz=0;
+    rbh=horizontal() //funcion busqueda dulces horizontal
+    rbv=vertical() //funcion buscar dulces vertical
+    for(var j=1;j<8;j++)
+    {
+        matriz=matriz+$(".col-"+j).children().length;
+        //alert("matriz: " + matriz);
+    }
+    if(rbh==0 && rbv==0 && matriz!=49) //condicion si no encuentra 3 dulces o mas llamar a funcion para volver a completar el juego
+    {
+        alert("nuevos dulces no hay");
+        //clearInterval(eliminar);
+        bnewd=0;
+        //newdulces=setInterval(function()
+        //{
+            nuevosdulces() //Funcion completar nuevos dulces
+        //},600)
+    }
+    if(rbh==1 || rbv==1)
+    {
+        $(".elemento").draggable({ disabled: true });
+        $("div[class^='col']").css("justify-content","flex-end")
+        $(".activo").hide("pulsate",1000,function(){
+        var scoretmp=$(".activo").length;
+        $(".activo").remove("img")
+        score=score+scoretmp;
+        $("#score-text").html(score) //Cambiar puntuacion
+        })
+    }
+    if(rbh==0 && rbv==0 && matriz==49)
+    {
+        //alert(matriz);
+        $(".elemento").draggable({
+        disabled: false,
+        containment: ".panel-tablero",
+        revert: true,
+        revertDuration: 0,
+        snap: ".elemento",
+        snapMode: "inner",
+        snapTolerance: 40,
+        start: function(event, ui){
+        mov=mov+1;
+        $("#movimientos-text").html(mov)
+        }
+        });
+    }
+    $(".elemento").droppable({
+    drop: function (event, ui) {
+    var dropped = ui.draggable;
+    var droppedOn = this;
+    espera=0;
+    do{
+        espera=dropped.swap($(droppedOn));
+    }while(espera==0)
+    rbh=horizontal() //funcion busqueda dulces horizontal
+    rbv=vertical() //funcion buscar dulces vertical
+    if(rbh==0 && rbv==0)
+    {
+        dropped.swap($(droppedOn));
+    }
+    if(rbh==1 || rbv==1)
+    {
+        clearInterval(newdulces);
+        clearInterval(eliminar); //desactivar funcion desplazamiento()
+        eliminar=setInterval(function(){eliminarhorver()},150) //activar funcion eliminarhorver
+    }
+    },
+    });
+    }
+    
+// fin eliminar 3 dulces //
+        
 
 // busqueda horizontal //
 function horizontal(){
@@ -85,6 +159,8 @@ const cantidaddulces = 7;
 // llenar tablero //
 function llenar() {     
       for (var i = 0; i < columnas.length; i++) {
+          cont ++;
+          //alert(cont);
           var cantidad = $(columnas[i]).children().length;
           for (var j = 0; j < cantidaddulces - cantidad; j++) {
               var img = Math.floor(Math.random() * 4) + 1;
@@ -120,8 +196,8 @@ function llenar() {
                               "top": "unset",
                               "bottom":"5px"
                           });
-                          siguienteDulce = true;
-                          j++;
+                          //siguienteDulce = true;
+                          //j++;
                       }
                   })
           }
@@ -129,7 +205,11 @@ function llenar() {
       }
       //draganddrop();
       //eliminarDulces();
-
+      //alert(cont);
+      if(cont == 7){
+        
+        setInterval(function(){eliminarDulces()},5000)
+    }
   }
 
 //fin llenar tablero//
