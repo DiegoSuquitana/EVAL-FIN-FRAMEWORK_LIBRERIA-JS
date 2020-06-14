@@ -21,6 +21,7 @@ var mov = 0;
 var espera = 0;
 var min = 2;
 var seg = 0;
+var score = 0;
 
 $(function(){
     color1();
@@ -97,13 +98,15 @@ function eliminarDulces(){
     }
     if(rbh==1 || rbv==1)
     {
+        //alert("puntuacion");
         $(".elemento").draggable({ disabled: true });
         $("div[class^='col']").css("justify-content","flex-end")
         $(".activo").hide("pulsate",1000,function(){
-        var scoretmp=$(".activo").length;
-        $(".activo").remove("img")
-        score=score+scoretmp;
-        $("#score-text").html(score) //Cambiar puntuacion
+            var scoretmp=$(".activo").length;
+            //alert(scoretmp);
+            $(".activo").remove("img")
+            score=score+scoretmp;
+            $("#score-text").html(score) //Cambiar puntuacion
         })
     }
     if(rbh==0 && rbv==0 && matriz==49)
