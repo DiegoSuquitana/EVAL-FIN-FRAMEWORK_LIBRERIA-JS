@@ -17,6 +17,9 @@ function color2(){
 }
 //fin animacion titulo//
 var cont = 0;
+var mov = 0;
+var espera = 0;
+
 $(function(){
     color1();
     
@@ -26,6 +29,18 @@ $(function(){
         //eliminarDulces();
     })
 
+// intercambiar los dulces //
+jQuery.fn.swap = function(b)
+{
+    b = jQuery(b)[0];
+    var a = this[0];
+    var t = a.parentNode.insertBefore(document.createTextNode(''), a);
+    b.parentNode.insertBefore(a, b);
+    t.parentNode.insertBefore(b, t);
+    t.parentNode.removeChild(t);
+    return this;
+};
+// fin intercambiar los dulces //
 
 // eliminar 3 dulces //
 function eliminarDulces(){
@@ -39,7 +54,7 @@ function eliminarDulces(){
     }
     if(rbh==0 && rbv==0 && matriz!=49) //condicion si no encuentra 3 dulces o mas llamar a funcion para volver a completar el juego
     {
-        alert("nuevos dulces no hay");
+        //alert("nuevos dulces no hay");
         //clearInterval(eliminar);
         bnewd=0;
         //newdulces=setInterval(function()
@@ -60,42 +75,44 @@ function eliminarDulces(){
     }
     if(rbh==0 && rbv==0 && matriz==49)
     {
-        //alert(matriz);
+        //alert("permitir movimiento");
         $(".elemento").draggable({
-        disabled: false,
-        containment: ".panel-tablero",
-        revert: true,
-        revertDuration: 0,
-        snap: ".elemento",
-        snapMode: "inner",
-        snapTolerance: 40,
-        start: function(event, ui){
-        mov=mov+1;
-        $("#movimientos-text").html(mov)
-        }
+            disabled: false,
+            containment: ".panel-tablero",
+            revert: true,
+            revertDuration: 0,
+            snap: ".elemento",
+            snapMode: "inner",
+            snapTolerance: 40,
+            start: function(event, ui){
+                mov=mov+1;
+                $("#movimientos-text").html(mov)
+            }
         });
     }
+
     $(".elemento").droppable({
-    drop: function (event, ui) {
-    var dropped = ui.draggable;
-    var droppedOn = this;
-    espera=0;
-    do{
-        espera=dropped.swap($(droppedOn));
-    }while(espera==0)
-    rbh=horizontal() //funcion busqueda dulces horizontal
-    rbv=vertical() //funcion buscar dulces vertical
-    if(rbh==0 && rbv==0)
-    {
-        dropped.swap($(droppedOn));
-    }
-    if(rbh==1 || rbv==1)
-    {
-        clearInterval(newdulces);
-        clearInterval(eliminar); //desactivar funcion desplazamiento()
-        eliminar=setInterval(function(){eliminarhorver()},150) //activar funcion eliminarhorver
-    }
-    },
+        drop: function (event, ui) {
+            var dropped = ui.draggable;
+            var droppedOn = this;
+            espera=0;
+            do{
+                espera=dropped.swap($(droppedOn));
+            }while(espera==0)
+            rbh=horizontal() //funcion busqueda dulces horizontal
+            rbv=vertical() //funcion buscar dulces vertical
+            if(rbh==0 && rbv==0)
+            {
+                dropped.swap($(droppedOn));
+            }
+            if(rbh==1 || rbv==1)
+            {
+                //clearInterval(newdulces);
+                //clearInterval(eliminar); //desactivar funcion desplazamiento()
+                //eliminar=setInterval(function(){eliminarhorver()},150) //activar funcion eliminarhorver
+                setInterval(function(){eliminarDulces()},150)
+            }
+        },
     });
     }
     
@@ -210,6 +227,7 @@ function llenar() {
       if(cont == 7){
         
         setInterval(function(){eliminarDulces()},5000)
+        
     }
   }
 
