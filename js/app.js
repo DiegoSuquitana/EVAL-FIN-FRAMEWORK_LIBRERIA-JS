@@ -31,6 +31,13 @@ $(function(){
         setInterval(function(){timer()},1000)
     })
 
+// visualizar panel score //
+    function callback()
+    {
+        $( ".panel-score" ).animate({width:'100%'},4000);
+    }
+// fin visualizar panel score
+
 // tiempo //
 function timer()
 {
