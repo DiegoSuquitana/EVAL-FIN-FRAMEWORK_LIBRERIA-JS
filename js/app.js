@@ -19,6 +19,8 @@ function color2(){
 var cont = 0;
 var mov = 0;
 var espera = 0;
+var min = 2;
+var seg = 0;
 
 $(function(){
     color1();
@@ -26,8 +28,31 @@ $(function(){
     $(".btn-reinicio").click(function(){
         
         llenar();
-        //eliminarDulces();
+        setInterval(function(){timer()},1000)
     })
+
+// tiempo //
+function timer()
+{
+  if(seg!=0)
+  {
+    seg=seg-1;
+  }
+  if(seg==0)
+  {
+    if(min==0)
+    {
+      $( ".panel-tablero" ).hide("drop","slow",callback);
+      $( ".time" ).hide();
+    }
+    seg=59;
+    min=min-1;
+  }
+  $("#timer").html("0"+min+":"+seg)
+}
+
+// fin tiempo //
+
 
 // intercambiar los dulces //
 jQuery.fn.swap = function(b)
