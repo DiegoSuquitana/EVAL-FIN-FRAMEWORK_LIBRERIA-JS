@@ -52,11 +52,6 @@ function llenar() {
               var height = dulce.height();
             //Este es el punto de inicio de la animacion
               var puntoinicio = parseInt($(".panel-tablero").position().top) + parseInt($(".panel-tablero").css("padding-top")) + parseInt($(".panel-tablero").css("margin-top"))
-              //var puntofinal = parseInt($(".panel-tablero").position().bottom) + parseInt($(".panel-tablero").css("padding-bottom")) + parseInt($(".panel-tablero").css("margin-bottom"))
-              //alert("cantidad dulces" + cantidaddulces);
-              //alert("cantidad" + cantidad);
-              //alert("j" + j);
-              //alert(((cantidaddulces - cantidad - j - 1) * 100) + puntoinicio);
               //Esta es la animacion
               dulce.css({
                       //width: width,
@@ -77,7 +72,8 @@ function llenar() {
                           $(this).addClass("displayed");;
                           $(this).css({
                              "position": "relative",
-                              "top": "unset"
+                              "top": "unset",
+                              "bottom":"25px"
                           });
                           siguienteDulce = true;
                           j++;
@@ -133,7 +129,7 @@ function draganddrop() {
 
   columnas.css("height", cantidaddulces * 100 + "px");
 
-
+/*
 //llenar tablero//
 function tablero(){
     //i++;
@@ -183,7 +179,7 @@ function tablero(){
 }
 
 // fin - llenar tablero//
-
+*/
 });
 
 
