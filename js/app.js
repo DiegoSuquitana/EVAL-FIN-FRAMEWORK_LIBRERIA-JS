@@ -16,7 +16,6 @@ function color2(){
     })
 }
 //fin animacion titulo//
-//var i=0;
 
 $(function(){
     color1();
@@ -24,29 +23,78 @@ $(function(){
     $(".btn-reinicio").click(function(){
         
         llenar();
-        
+        vertical();
     })
 
-//////////////////
+
+// busqueda horizontal //
+function horizontal(){
+    var bh=0;
+    for(var j=1;j<8;j++)
+    {
+      for(var k=1;k<6;k++)
+      {
+        var res1=$(".col-"+k).children("img:nth-last-child("+j+")").attr("src")
+        var res2=$(".col-"+(k+1)).children("img:nth-last-child("+j+")").attr("src")
+        var res3=$(".col-"+(k+2)).children("img:nth-last-child("+j+")").attr("src")
+        if((res1==res2) && (res2==res3) && (res1!=null) && (res2!=null) && (res3!=null))
+        {
+            $(".col-"+k).children("img:nth-last-child("+(j)+")").attr("class","elemento activo")
+            $(".col-"+(k+1)).children("img:nth-last-child("+(j)+")").attr("class","elemento activo")
+            $(".col-"+(k+2)).children("img:nth-last-child("+(j)+")").attr("class","elemento activo")
+            bh=1;
+        }
+      }
+    }
+    return bh;
+}
+// fin busqueda horizontal //
+
+// busqueda vertical //
+function vertical()
+{
+  var bv=0;
+  for(var l=1;l<6;l++)
+  {
+    for(var k=1;k<8;k++)
+    {
+      var res1=$(".col-"+k).children("img:nth-child("+l+")").attr("src")
+      var res2=$(".col-"+k).children("img:nth-child("+(l+1)+")").attr("src")
+      var res3=$(".col-"+k).children("img:nth-child("+(l+2)+")").attr("src")
+      if((res1==res2) && (res2==res3) && (res1!=null) && (res2!=null) && (res3!=null))
+      {
+          $(".col-"+k).children("img:nth-child("+(l)+")").attr("class","elemento activo")
+          $(".col-"+k).children("img:nth-child("+(l+1)+")").attr("class","elemento activo")
+          $(".col-"+k).children("img:nth-child("+(l+2)+")").attr("class","elemento activo")
+          bv=1;
+      }
+    }
+  }
+  return bv;
+
+}
+// fin busqueda vertical //
+
+
+
+// llenar tablero //
 
 var columnas = $(".panel-tablero div");
 //Cantidad de dulces del tablero
-  const cantidaddulces = 7;
-
+const cantidaddulces = 7;
+// llenar tablero //
 function llenar() {     
       for (var i = 0; i < columnas.length; i++) {
           var cantidad = $(columnas[i]).children().length;
           for (var j = 0; j < cantidaddulces - cantidad; j++) {
               var img = Math.floor(Math.random() * 4) + 1;
               var imagen="image/"+img+".png";
-              //$(".col-"+j).prepend("<img src="+imagen+" class='elemento'/>").css("justify-content","flex-start")
               var dulce = $("<img src='" + imagen + "' class='elemento'/>").css("justify-content","flex-start")
               //se oculta para mostrarlo con la animacion
               dulce.css({
                       display: 'none'
                   })
-                  .prependTo(columnas[i]);
-            
+                  .prependTo(columnas[i]);         
             //alto y ancho del dulce
               var width = dulce.width();
               var height = dulce.height();
@@ -54,11 +102,8 @@ function llenar() {
               var puntoinicio = parseInt($(".panel-tablero").position().top) + parseInt($(".panel-tablero").css("padding-top")) + parseInt($(".panel-tablero").css("margin-top"))
               //Esta es la animacion
               dulce.css({
-                      //width: width,
-                      //height: height,
                       display: 'none',
                       top: puntoinicio + 'px',
-                      //bottom: '800px',
                       position: 'absolute'
                   })
                   .delay(1000 * j)
@@ -73,24 +118,21 @@ function llenar() {
                           $(this).css({
                              "position": "relative",
                               "top": "unset",
-                              "bottom":"25px"
+                              "bottom":"5px"
                           });
                           siguienteDulce = true;
                           j++;
                       }
                   })
-                  //Esta linea es la que elimina cuando se les hace click encima
-                  .click(function() {
-                      $(this).remove();
-                  });
-                  
-
           }
         
       }
-      draganddrop();
+      //draganddrop();
+      //eliminarDulces();
 
   }
+
+//fin llenar tablero//
 
 function draganddrop() {
   var columnas = $(".panel-tablero div");
@@ -123,11 +165,11 @@ function draganddrop() {
 }
 
   //llenar();
-  $('#rellenar').click(() => {
-      llenar();
-  });
+ // $('#rellenar').click(() => {
+   //   llenar();
+ // });
 
-  columnas.css("height", cantidaddulces * 100 + "px");
+ // columnas.css("height", cantidaddulces * 100 + "px");
 
 /*
 //llenar tablero//
@@ -181,8 +223,3 @@ function tablero(){
 // fin - llenar tablero//
 */
 });
-
-
-
-
-//////////////////////
