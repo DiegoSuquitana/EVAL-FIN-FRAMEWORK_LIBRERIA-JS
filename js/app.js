@@ -23,15 +23,49 @@ var min = 2;
 var seg = 0;
 var score = 0;
 
+var tiempo=0;     //variable de tiempo para temporizador
+var intervalo=0;  //variable de tiempo para funcion de desplazamiento
+var eliminar=0;   //variable de tiempo para eliminar dulces
+
 $(function(){
     color1();
     
     $(".btn-reinicio").click(function(){
+        cont = 0;
+        mov = 0;
+        score = 0;
         
-        llenar();
-        setInterval(function(){timer()},1000);
+        $(".panel-score").css("width","25%");
+        $(".panel-tablero").show();
+        $(".time").show();
+        $("#score-text").html("")
+        $("#movimientos-text").html("0")
         $(this).html("Reiniciar");
+
+        clearInterval(intervalo);
+        clearInterval(tiempo);
+        clearInterval(eliminar);
+        
+        min = 2;
+        seg = 0;
+        borrar();
+        //llenar();
+        intervalo = setInterval(function(){llenar()},600);
+        tiempo = setInterval(function(){timer()},1000)
+
     })
+
+// borrado //
+
+function borrar()
+{
+  for(var j=1;j<8;j++)
+  {
+    $(".col-"+j).children("img").detach();
+  }
+}
+
+//fin borrado //
 
 // visualizar panel score //
 function callback()
@@ -51,8 +85,11 @@ function timer()
   {
     if(min==0)
     {
-      $( ".panel-tablero" ).hide("drop","slow",callback);
-      $( ".time" ).hide();
+        clearInterval(intervalo);
+        clearInterval(tiempo);
+        clearInterval(eliminar);
+        $( ".panel-tablero" ).hide("drop","slow",callback);
+        $( ".time" ).hide();
     }
     seg=59;
     min=min-1;
@@ -89,11 +126,13 @@ function eliminarDulces(){
     if(rbh==0 && rbv==0 && matriz!=49) //condicion si no encuentra 3 dulces o mas llamar a funcion para volver a completar el juego
     {
         //alert("nuevos dulces no hay");
-        //clearInterval(eliminar);
+        clearInterval(eliminar);
         bnewd=0;
+        cont = 0;
         //newdulces=setInterval(function()
         //{
-            llenar() //Funcion completar nuevos dulces
+            intervalo = setInterval(function(){llenar()},600);
+            //llenar() //Funcion completar nuevos dulces
         //},600)
     }
     if(rbh==1 || rbv==1)
@@ -144,9 +183,9 @@ function eliminarDulces(){
             if(rbh==1 || rbv==1)
             {
                 //clearInterval(newdulces);
-                //clearInterval(eliminar); //desactivar funcion desplazamiento()
+                clearInterval(intervalo); //desactivar funcion desplazamiento()
                 //eliminar=setInterval(function(){eliminarhorver()},150) //activar funcion eliminarhorver
-                setInterval(function(){eliminarDulces()},150)
+                eliminar = setInterval(function(){eliminarDulces()},150)
             }
         },
     });
@@ -211,9 +250,11 @@ var columnas = $(".panel-tablero div");
 //Cantidad de dulces del tablero
 const cantidaddulces = 7;
 // llenar tablero //
-function llenar() {     
+function llenar() { 
+    cont ++;
+    //alert("cont: "+ cont);
+if (cont < 8){
       for (var i = 0; i < columnas.length; i++) {
-          cont ++;
           //alert(cont);
           var cantidad = $(columnas[i]).children().length;
           for (var j = 0; j < cantidaddulces - cantidad; j++) {
@@ -255,20 +296,26 @@ function llenar() {
                       }
                   })
           }
+          
         
       }
+      
+    }
       //draganddrop();
       //eliminarDulces();
       //alert(cont);
-      if(cont == 7){
-        
-        setInterval(function(){eliminarDulces()},5000)
+    if(cont == 16){
+        //alert(cont);
+        clearInterval(intervalo);
+        //setTimeout(function(){eliminarDulces()}, 2000);
+        eliminar = setInterval(function(){eliminarDulces()},150);
+        //cont = 0;
         
     }
   }
 
 //fin llenar tablero//
-
+/*
 function draganddrop() {
   var columnas = $(".panel-tablero div");
   for (var i = 0; i < columnas.length; i++) {
