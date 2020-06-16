@@ -53,9 +53,8 @@ $(function(){
         min = 2;
         seg = 0;
         borrar();
-        //llenar();
-        intervalo = setInterval(function(){llenar()},600);
-        tiempo = setInterval(function(){timer()},10)
+        intervalo = setInterval(function(){llenar()},150)
+        tiempo = setInterval(function(){timer()},1000)
 
     })
     
@@ -135,8 +134,8 @@ function eliminarDulces(){
         clearInterval(eliminar);
         bnewd=0;
         cont = 0;
-     
-            intervalo = setInterval(function(){llenar()},600);
+        llenar();
+        //intervalo = setInterval(function(){llenar()},150);
      
     }
     if(rbh==1 || rbv==1)
@@ -187,7 +186,7 @@ function eliminarDulces(){
             if(rbh==1 || rbv==1)
             {
                 clearInterval(intervalo); 
-                eliminar = setInterval(function(){eliminarDulces()},150)
+                eliminar = setInterval(function(){eliminarDulces()},300)
             }
         },
     });
@@ -253,9 +252,9 @@ var columnas = $(".panel-tablero div");
 const cantidaddulces = 7;
 // llenar tablero //
 function llenar() { 
-    cont ++;
+    //cont ++;
     //alert("cont: "+ cont);
-if (cont < 8){
+//if (cont < 8){
       for (var i = 0; i < columnas.length; i++) {
           //alert(cont);
           var cantidad = $(columnas[i]).children().length;
@@ -276,12 +275,12 @@ if (cont < 8){
                       top: puntoinicio + 'px',
                       position: 'absolute'
                   })
-                  .delay(1000 * j)
+                  //.delay(500 * j)
                   .fadeIn()
                   .animate({
                       top: (((cantidaddulces - cantidad - j -1) * 100) + puntoinicio) + 'px',
                   }, {
-                      duration: 250,
+                      duration: 500,
                       queue: true,
                       complete: function() {
                           $(this).addClass("displayed");;
@@ -291,28 +290,25 @@ if (cont < 8){
                               "bottom":"5px"
                           });
                           
-                          clearInterval(intervalo);
-                          eliminar = setInterval(function(){eliminarDulces()},150);
+                         j++; 
                       }
                   })
           }
-          
-        
       }
       
-    }
+    //}
+    
+    //cont++;
       //eliminarDulces();
       //alert(cont);
-/*    if(cont == 3){
+    //if(cont == 8){
         //alert(cont);
-        clearInterval(intervalo);
-        //setTimeout(function(){eliminarDulces()}, 2000);
-        
-        eliminar = setInterval(function(){eliminarDulces()},150);
+        clearInterval(intervalo);   
+        eliminar = setInterval(function(){eliminarDulces()},300);
         
         //cont = 0;
         
-    }*/
+    //}
   }
 
 });
