@@ -27,6 +27,7 @@ var tiempo=0;     //variable de tiempo para temporizador
 var intervalo=0;  //variable de tiempo para funcion de desplazamiento
 var eliminar=0;   //variable de tiempo para eliminar dulces
 
+
 $(function(){
     color1();
     
@@ -35,12 +36,15 @@ $(function(){
         mov = 0;
         score = 0;
         
+       
         $(".panel-score").css("width","25%");
         $(".panel-tablero").show();
         $(".time").show();
         $("#score-text").html("")
         $("#movimientos-text").html("0")
         $(this).html("Reiniciar");
+       
+        $("#titulo2").hide();
 
         clearInterval(intervalo);
         clearInterval(tiempo);
@@ -51,12 +55,11 @@ $(function(){
         borrar();
         //llenar();
         intervalo = setInterval(function(){llenar()},600);
-        tiempo = setInterval(function(){timer()},1000)
+        tiempo = setInterval(function(){timer()},10)
 
     })
-
+    
 // borrado //
-
 function borrar()
 {
   for(var j=1;j<8;j++)
@@ -70,7 +73,10 @@ function borrar()
 // visualizar panel score //
 function callback()
     {
-        $( ".panel-score" ).animate({width:'100%'},4000);
+        color1();   
+        var titulo2 = $(".panel-score").prepend("<div class=main-container id=contitulo2><h2 class=main-titulo id=titulo2>Juego terminado</h2></div>")
+        $( ".panel-score" ).animate({width:"100%"},4000);
+        
     }
 // fin visualizar panel score
 
@@ -129,11 +135,9 @@ function eliminarDulces(){
         clearInterval(eliminar);
         bnewd=0;
         cont = 0;
-        //newdulces=setInterval(function()
-        //{
+     
             intervalo = setInterval(function(){llenar()},600);
-            //llenar() //Funcion completar nuevos dulces
-        //},600)
+     
     }
     if(rbh==1 || rbv==1)
     {
@@ -182,9 +186,7 @@ function eliminarDulces(){
             }
             if(rbh==1 || rbv==1)
             {
-                //clearInterval(newdulces);
-                clearInterval(intervalo); //desactivar funcion desplazamiento()
-                //eliminar=setInterval(function(){eliminarhorver()},150) //activar funcion eliminarhorver
+                clearInterval(intervalo); 
                 eliminar = setInterval(function(){eliminarDulces()},150)
             }
         },
@@ -266,9 +268,6 @@ if (cont < 8){
                       display: 'none'
                   })
                   .prependTo(columnas[i]);         
-            //alto y ancho del dulce
-              var width = dulce.width();
-              var height = dulce.height();
             //Este es el punto de inicio de la animacion
               var puntoinicio = parseInt($(".panel-tablero").position().top) + parseInt($(".panel-tablero").css("padding-top")) + parseInt($(".panel-tablero").css("margin-top"))
               //Esta es la animacion
@@ -282,7 +281,7 @@ if (cont < 8){
                   .animate({
                       top: (((cantidaddulces - cantidad - j -1) * 100) + puntoinicio) + 'px',
                   }, {
-                      duration: 500,
+                      duration: 250,
                       queue: true,
                       complete: function() {
                           $(this).addClass("displayed");;
@@ -291,8 +290,9 @@ if (cont < 8){
                               "top": "unset",
                               "bottom":"5px"
                           });
-                          //siguienteDulce = true;
-                          //j++;
+                          
+                          clearInterval(intervalo);
+                          eliminar = setInterval(function(){eliminarDulces()},150);
                       }
                   })
           }
@@ -301,107 +301,18 @@ if (cont < 8){
       }
       
     }
-      //draganddrop();
       //eliminarDulces();
       //alert(cont);
-    if(cont == 16){
+/*    if(cont == 3){
         //alert(cont);
         clearInterval(intervalo);
         //setTimeout(function(){eliminarDulces()}, 2000);
+        
         eliminar = setInterval(function(){eliminarDulces()},150);
+        
         //cont = 0;
         
-    }
+    }*/
   }
 
-//fin llenar tablero//
-/*
-function draganddrop() {
-  var columnas = $(".panel-tablero div");
-  for (var i = 0; i < columnas.length; i++) {
-    elementos = $(columnas[i]).find("img");
-
-    for (var j = 0; j < elementos.length; j++) {
-      $(elementos[j]).draggable({
-        disabled: false,
-        revert: "invalid",
-        containment: ".panel-tablero",
-        scroll: false,
-        grid: [100, 100],
-      }, 2000);
-      $(elementos[j]).droppable({
-        disabled: false,
-        classes: {
-          "ui-droppable-hover": "ui-state-hover"
-        },
-        drop: function (event, ui) {
-
-          $($(ui.draggable)).css({
-            left: "auto",
-            top: "auto"
-          });
-        }
-      });
-    }
-  }
-}
-
-  //llenar();
- // $('#rellenar').click(() => {
-   //   llenar();
- // });
-
- // columnas.css("height", cantidaddulces * 100 + "px");
-
-/*
-//llenar tablero//
-function tablero(){
-    //i++;
-    var numero = 0;
-    var imagen;
-
-    var columnas = $(".panel-tablero div");
-    const cantidaddulces = 7;
-
-    $('.elemento').draggable({disabled: true});
-    
-    for(var i=1; i<8; i++){  
-        for(var j=1; j<8; j++){
-            if($('.col-'+j).children("img:nth-child("+i+")").html()==null){
-                numero = Math.floor(Math.random()*4)+ 1;
-                imagen="image/"+numero+".png";
-                var dulce = $(".col-"+j).prepend("<img src="+imagen+" class='elemento'/>").css("justify-content","flex-start")
-                var puntoinicio = parseInt($(".panel-tablero").position().top) + parseInt($(".panel-tablero").css("padding-top")) + parseInt($(".panel-tablero").css("margin-top"));
-
-                dulce.css({
-                    display: 'none',
-                    top: puntoinicio + 'px',
-                    position: 'absolute'
-                })
-                .delay(1000 * j)
-                .fadeIn()
-                .animate({
-                      top: (((cantidaddulces - i - j - 1) * 100) + puntoinicio) + 'px'
-                  }, {
-                      duration: 500,
-                      queue: true,
-                      complete: function() {
-                          $(this).addClass("displayed");;
-                          $(this).css({
-                             "position": "relative",
-                              "top": "unset"
-                          });
-                          siguienteDulce = true;
-                          j++;
-                      }
-                  })
-                
-            }
-        }
-    }
-
-}
-
-// fin - llenar tablero//
-*/
 });
